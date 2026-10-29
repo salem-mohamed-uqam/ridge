@@ -1,0 +1,62 @@
+
+#' Plot Ridge Cross-Validation Errors
+#'
+#' Plots the cross-validation error associated with each
+#' candidate value of lambda.
+#'
+#' @param cv_result A list returned by ridge_cv() or
+#'   ridge_cv_cpp().
+#'
+#' @return A plot of cross-validation error against lambda.
+#' @export
+ridge_plot <- function(cv_result) {
+
+  if (!is.list(cv_result)) {
+    stop("cv_result must be a list.")
+  }
+
+  lambdas <- cv_result$lambda
+  if (is.null(lambdas)) {
+    lambdas <- cv_result$lambdas
+  }
+
+  errors <- cv_result$cv_errors
+
+  if (is.null(lambdas) || is.null(errors)) {
+    stop("cv_result must contain lambda(s) and cv_errors.")
+  }
+
+  lambdas <- as.numeric(lambdas)
+  errors <- as.numeric(errors)
+
+  if (length(lambdas) != length(errors) ||
+      length(lambdas) == 0 ||
+      any(!is.finite(lambdas)) ||
+      any(lambdas <= 0) ||
+      any(!is.finite(errors))) {
+    stop("Invalid lambda values or cross-validation errors.")
+  }
+
+  ord <- order(lambdas)
+
+  plot(
+    lambdas[ord],
+    errors[ord],
+    type = "b",
+    log = "x",
+    xlab = expression(lambda),
+    ylab = "Cross-validation MSE",
+    main = "Ridge Cross-Validation"
+  )
+
+  best_lambda <- cv_result$lambda.min
+  if (is.null(best_lambda)) {
+    best_lambda <- cv_result$lambda_best
+  }
+
+  if (!is.null(best_lambda)) {
+    abline(v = best_lambda, col = "red", lty = 2)
+  }
+
+  invisible(cv_result)
+}

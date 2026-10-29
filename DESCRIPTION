@@ -1,14 +1,22 @@
 Package: ridge
-Title: What the Package Does (One Line, Title Case)
+Title: Ridge Regression with Cross-Validation
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
-Config/roxygen2/version: 8.1.0
+Authors@R:
+    person("First", "Last", email = "first.last@example.com",
+           role = c("aut", "cre"))
+Description: Provides Ridge regression coefficient estimation,
+    prediction, cross-validation in R and C++, and visualization
+    of model performance across regularization parameters.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-Suggests: 
+Imports:
+    Rcpp,
+    RcppArmadillo
+LinkingTo:
+    Rcpp,
+    RcppArmadillo
+Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.1.0
